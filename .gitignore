@@ -1,0 +1,8 @@
+unicode.tsv
+unicode.json
+ucd.nounihan.grouped.xml
+ucd.nounihan.grouped.zip
+PropertyValueAliases.txt
+PropertyAliases.txt
+*.pyc
+*~
