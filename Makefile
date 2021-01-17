@@ -1,16 +1,30 @@
 
-unicode.tsv: unicode.json
-	python3 make_tsv.py < unicode.json > unicode.tsv
+unichoose: data/data.go
+	go build .
 
-unicode.json: ucd.nounihan.grouped.xml make_json.py
-	python3 make_json.py > unicode.json
+data/data.go: data.json
+	go generate ./data
+
+data.json: ucd.nounihan.grouped.xml common/annotations/en.xml common/annotationsDerived/en.xml make_data.py
+	python3 make_data.py > data.json
 
 ucd.nounihan.grouped.xml: ucd.nounihan.grouped.zip
-	unzip -o ucd.nounihan.grouped.zip
-	touch ucd.nounihan.grouped.xml
+	unzip -o $< $@
+	touch $@
+
+common/annotations/en.xml: cldr-common-38.1.zip
+	unzip -o $< $@
+	touch $@
+
+common/annotationsDerived/en.xml: cldr-common-38.1.zip
+	unzip -o $< $@
+	touch $@
 
 ucd.nounihan.grouped.zip:
 	curl -fLO "https://www.unicode.org/Public/UCD/latest/ucdxml/ucd.nounihan.grouped.zip"
+
+cldr-common-38.1.zip:
+	curl -fLO "https://unicode.org/Public/cldr/38.1/cldr-common-38.1.zip"
 
 PropertyValueAliases.txt:
 	curl -fLO "https://www.unicode.org/Public/UCD/latest/ucd/PropertyValueAliases.txt"
@@ -24,6 +38,6 @@ fmt:
 	black *.py
 
 clean:
-	rm -f unicode.json unicode.tsv ucd.nounihan.grouped.xml ucd.nounihan.grouped.zip PropertyValueAliases.txt PropertyAliases.txt
+	rm -rf *.json *.xml *.zip common/ data/data.go unichoose
 
-.PHONY: fetch-docs fmt clean
+.PHONY: fetch-docs fmt clean bins

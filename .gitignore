@@ -1,8 +1,11 @@
-unicode.tsv
-unicode.json
-ucd.nounihan.grouped.xml
-ucd.nounihan.grouped.zip
-PropertyValueAliases.txt
-PropertyAliases.txt
+*.tsv
+*.json
+*.xml
+*.zip
 *.pyc
 *~
+
+PropertyValueAliases.txt
+PropertyAliases.txt
+/unichoose
+data/data.go
